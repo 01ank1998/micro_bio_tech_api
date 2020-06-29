@@ -10,7 +10,7 @@ async function findUserByPhone(phoneNumber) {
 
 async function updateUserByPhone({ userData, phoneNumber }) {
   await Users.updateOne({ phoneNumber: phoneNumber }, { $set: userData });
-  let updatedUser = await Users.findOne({ phoneNumber: user.phoneNumber });
+  let updatedUser = await Users.findOne({ phoneNumber: phoneNumber });
   return updatedUser;
 }
 

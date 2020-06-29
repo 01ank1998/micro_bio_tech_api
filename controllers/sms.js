@@ -7,15 +7,18 @@ const client = require("twilio")(
 
 async function sendSms(message, to) {
   try {
+    console.log(
+      config.get("twilio.accountSid"),
+      config.get("twilio.authToken")
+    );
     await client.messages.create({
       body: message,
-      from: "+15017122661",
+      from: "+17756247485",
       to: to,
     });
     logger.info("Message successfully sent to", to);
   } catch (error) {
-    logger.info("Message sending failed to ", to);
-    throw new Error("Message Sending failed");
+    console.log(error);
   }
 }
 

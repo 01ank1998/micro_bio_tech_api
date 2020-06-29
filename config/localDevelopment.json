@@ -10,9 +10,7 @@
     "environment": "local"
   },
   "cors": {
-    "whitelist": [
-      "https://localhost:3000"
-    ],
+    "whitelist": ["https://localhost:3000"],
     "allowLocal": true
   },
   "rateLimit": {

@@ -76,14 +76,14 @@ async function _preAuth(req, res, next) {
 }
 
 async function _fakeAuth(req, res, next) {
-  let user = await UserController.findUserByEmail("admin@dhiyo.com");
+  let user = await UserController.findUserByPhone("9999999999");
   req.user = user;
   req.isAuth = true;
   next();
 }
 
 function generateOtp() {
-  let digits = "0123456789";
+  let digits = "123456789";
   let otpLength = 6;
   let otp = "";
   for (let i = 1; i <= otpLength; i++) {
@@ -117,7 +117,12 @@ async function _generateOtp(req, res) {
       });
     }
     sendSms(`Your OTP is ${otp}`, `+91${phoneNumber}`);
+    res.json({
+      success: true,
+      statusCode: "GENERATE OTP SUCCESS",
+    });
   } catch (err) {
+    console.log(err);
     res.json({
       success: false,
       statusCode: "GENERATE OTP FAILED",
@@ -133,22 +138,25 @@ async function _verifyOtp(req, res) {
       throw new Error("Mobile number and OTP is required");
     }
     const user = await UserController.findUserByPhone(phoneNumber);
-    if (user.otp === otp) {
-      const user = {
-        ...user,
-        otp: null,
-      };
-      const updatedUser = await UserController.updateUserByPhone(
-        user,
-        phoneNumber
-      );
+    const flag = parseInt(user.otp) === parseInt(otp);
+    if (flag) {
+      const updatedUser = await UserController.updateUserByPhone({
+        userData: { otp: null },
+        phoneNumber: phoneNumber,
+      });
+      logger.info({
+        statusCode: "VERIFY OTP SUCCESSFULL",
+      });
       res.json({
         success: true,
         statusCode: "VERIFY OTP SUCCESSFULL",
         data: updatedUser,
       });
+    } else {
+      throw new Error("OTP dosen't match");
     }
   } catch (error) {
+    console.log(error);
     res.json({
       success: false,
       statusCode: "VERIFY OTP FAILED",
