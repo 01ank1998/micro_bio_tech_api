@@ -25,7 +25,7 @@
   },
   "twilio": {
     "accountSid": "ACc74723d6cb9efc105bad6e2026383678",
-    "authToken": "ff9b2462a09aba73cb1a565a0591866e"
+    "authToken": "435671342ebb2e68f0435a93c3d697f0"
   },
   "logEnabled": true,
   "logLevel": "info",
